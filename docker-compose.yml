@@ -1,6 +1,16 @@
-version: '3'
+version: '2'
 
 services:
+  s3vol:
+    image: elementar/s3-volume
+    command: /data s3://lmmv-new-nexus-artifacts
+    volumes:
+      - nexus-data:/data
+    environment:
+      - BACKUP_INTERVAL=10s
+      - "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}"
+      - "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}"
+
   nginx-proxy:
     build: ./nginx
     ports:
@@ -17,3 +27,4 @@ services:
 
 volumes:
   nexus-data:
+    driver: local
